@@ -169,7 +169,6 @@ const Preloader = /** @constructor */ function () { // eslint-disable-line no-un
 	}
 
 	const DOWNLOAD_ATTEMPTS_MAX = 4;
-	const loadingFiles = {};
 	const lastProgress = { loaded: 0, total: 0 };
 	let progressFunc = null;
 
@@ -179,8 +178,8 @@ const Preloader = /** @constructor */ function () { // eslint-disable-line no-un
 		let totalIsValid = true;
 		let progressIsFinal = true;
 
-		Object.keys(loadingFiles).forEach(function (file) {
-			const stat = loadingFiles[file];
+		Object.keys({}).forEach(function (file) {
+			const stat = {}[file];
 			if (!stat.done) {
 				progressIsFinal = false;
 			}
@@ -211,7 +210,7 @@ const Preloader = /** @constructor */ function () { // eslint-disable-line no-un
 	};
 
 	this.loadPromise = function (file, fileSize, raw = false) {
-		return retry(loadFetch.bind(null, file, loadingFiles, fileSize, raw), DOWNLOAD_ATTEMPTS_MAX);
+		return retry(loadFetch.bind(null, file, {}, fileSize, raw), DOWNLOAD_ATTEMPTS_MAX);
 	};
 
 	this.preloadedFiles = [];
